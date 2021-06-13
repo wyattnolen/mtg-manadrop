@@ -46,5 +46,12 @@ export default {
   data: () => ({
     //
   }),
+
+  mounted() {
+    const mtg = require("mtgsdk");
+    mtg.card.all({ name: "Squee", pageSize: 1 }).on("data", (card) => {
+      console.log(card.multiverseid, card);
+    });
+  },
 };
 </script>
