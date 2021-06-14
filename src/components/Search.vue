@@ -22,7 +22,7 @@
         color="white"
         hide-no-data
         hide-selected
-        item-text="Description"
+        item-text="Name"
         item-value="API"
         label="Public APIs"
         placeholder="Start typing to Search"
@@ -56,7 +56,7 @@ export default {
   name: "Search",
 
   data: () => ({
-    descriptionLimit: 60,
+    nameLimit: 60,
     entries: [],
     isLoading: false,
     model: null,
@@ -75,13 +75,15 @@ export default {
       });
     },
     items() {
+      console.log(this.entries);
       return this.entries.map((entry) => {
-        const Description =
-          entry.Description.length > this.descriptionLimit
-            ? entry.Description.slice(0, this.descriptionLimit) + "..."
-            : entry.Description;
+        console.log("entry", entry);
+        const Name =
+          entry.name.length > this.nameLimit
+            ? entry.name.slice(0, this.nameLimit) + "..."
+            : entry.name;
 
-        return Object.assign({}, entry, { Description });
+        return Object.assign({}, entry, { Name });
       });
     },
   },
@@ -110,12 +112,16 @@ export default {
       }, 500); /* 500ms throttle */
     },
     fetchEntries() {
-      fetch("https://api.publicapis.org/entries")
+      //   fetch("https://api.publicapis.org/entries")
+      fetch("https://api.magicthegathering.io/v1/cards")
         .then((res) => res.json())
         .then((res) => {
-          const { count, entries } = res;
-          this.count = count;
-          this.entries = entries;
+          console.log(res);
+          //   const { count, entries } = res;
+          //   this.count = count;
+          //   this.entries = entries;
+          const { cards } = res;
+          this.entries = cards;
         })
         .catch((err) => {
           console.log(err);
