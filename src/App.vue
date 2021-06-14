@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <search />
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
@@ -40,18 +41,38 @@
 </template>
 
 <script>
+import Search from "./components/Search.vue";
 export default {
   name: "App",
 
-  data: () => ({
-    //
-  }),
+  components: {
+    Search,
+  },
 
-  mounted() {
-    const mtg = require("mtgsdk");
-    mtg.card.all({ name: "Squee", pageSize: 1 }).on("data", (card) => {
-      console.log(card.multiverseid, card);
-    });
+  data: () => ({}),
+
+  computed: {},
+
+  mounted() {},
+
+  watch: {},
+  methods: {
+    searchForCardByName(v) {
+      const mtg = require("mtgsdk");
+      mtg.card
+        .where({ name: v })
+        .then((results) => {
+          console.log(results);
+          this.items = results;
+        })
+        // .then((results) => {
+        //   const { count, entries } = results;
+        //   this.count = count;
+        //   this.entries = entries;
+        //   console.log(entries);
+        // })
+        .finally(() => (this.isLoading = false));
+    },
   },
 };
 </script>
