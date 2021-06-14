@@ -110,7 +110,12 @@
             </template>
           </template> -->
         </v-autocomplete>
-        {{ model.id }}
+        <v-list v-if="model">
+          <v-list-item v-for="item in model" :key="item.id">
+            {{ item.name }}
+          </v-list-item>
+        </v-list>
+        <!-- {{ model.id }} -->
         <!-- <v-list v-if="model" class="red lighten-3">
           <v-list-item v-for="(item, i) in model" :key="i">
            
@@ -136,7 +141,7 @@ export default {
     nameLimit: 60,
     entries: [],
     isLoading: false,
-    model: { name: "", id: "" },
+    model: null,
     search: null,
     selected: [],
   }),
@@ -160,6 +165,43 @@ export default {
     //     return Object.assign({}, entry, { Name });
     //   });
     // },
+  },
+
+  mounted() {
+    this.model = [
+      {
+        name: "Rage Weaver",
+        manaCost: "{1}{R}",
+        cmc: 2,
+        colors: ["Red"],
+        colorIdentity: ["R"],
+        type: "Creature — Human Wizard",
+        types: ["Creature"],
+        subtypes: ["Human", "Wizard"],
+        rarity: "Uncommon",
+        set: "10E",
+        setName: "Tenth Edition",
+        text: "{2}: Target black or green creature gains haste until end of turn. (It can attack and {T} this turn.)",
+        flavor: '"Let my passion spur your victory."',
+        artist: "John Matson",
+        number: "223★",
+        power: "2",
+        toughness: "1",
+        layout: "normal",
+        variations: ["6fd7afbb-7725-5f7a-91fe-cb578229971a"],
+        printings: ["10E", "INV"],
+        legalities: [
+          { format: "Commander", legality: "Legal" },
+          { format: "Duel", legality: "Legal" },
+          { format: "Legacy", legality: "Legal" },
+          { format: "Modern", legality: "Legal" },
+          { format: "Penny", legality: "Legal" },
+          { format: "Premodern", legality: "Legal" },
+          { format: "Vintage", legality: "Legal" },
+        ],
+        id: "9e0f4c70-6db0-5798-8307-caf4f98f17f9",
+      },
+    ];
   },
 
   watch: {
