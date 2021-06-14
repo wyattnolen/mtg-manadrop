@@ -67,15 +67,16 @@
           v-model="model"
           :loading="isLoading"
           :disabled="isUpdating"
-          :items="items"
+          :items="entries"
           :search-input.sync="search"
           filled
           chips
           color="blue-grey lighten-2"
           label="Select"
-          item-text="Name"
-          item-value="Name"
+          item-text="name"
+          item-value="id"
           multiple
+          return-object
           cache-items
         >
           <!-- <template v-slot:selection="data">
@@ -109,14 +110,17 @@
             </template>
           </template> -->
         </v-autocomplete>
-        <v-list v-if="fields" class="red lighten-3">
-          <v-list-item v-for="(item, i) in fields" :key="i">
+        {{ model.id }}
+        <!-- <v-list v-if="model" class="red lighten-3">
+          <v-list-item v-for="(item, i) in model" :key="i">
+           
             <v-list-item-content>
               <v-list-item-title v-text="item.name"></v-list-item-title>
               <p @click:close="remove(item)">remove</p>
             </v-list-item-content>
           </v-list-item>
-        </v-list>
+        </v-list> -->
+        <p @click="submit">test</p>
       </v-container>
     </v-form>
   </div>
@@ -132,32 +136,30 @@ export default {
     nameLimit: 60,
     entries: [],
     isLoading: false,
-    model: null,
+    model: { name: "", id: "" },
     search: null,
     selected: [],
   }),
 
   computed: {
-    fields() {
-      if (!this.model) return [];
-
-      return Object.keys(this.model).map((key) => {
-        return {
-          key,
-          value: this.model[key] || "n/a",
-        };
-      });
-    },
-    items() {
-      return this.entries.map((entry) => {
-        const Name =
-          entry.name.length > this.nameLimit
-            ? entry.name.slice(0, this.nameLimit) + "..."
-            : entry.name;
-
-        return Object.assign({}, entry, { Name });
-      });
-    },
+    // fields() {
+    //   if (!this.model) return [];
+    //   return Object.keys(this.model).map((key) => {
+    //     return {
+    //       key,
+    //       value: this.model[key] || "n/a",
+    //     };
+    //   });
+    // },
+    // items() {
+    //   return this.entries.map((entry) => {
+    //     const Name =
+    //       entry.name.length > this.nameLimit
+    //         ? entry.name.slice(0, this.nameLimit) + "..."
+    //         : entry.name;
+    //     return Object.assign({}, entry, { Name });
+    //   });
+    // },
   },
 
   watch: {
@@ -178,6 +180,9 @@ export default {
   },
 
   methods: {
+    submit() {
+      console.log(this.model);
+    },
     remove(item) {
       console.log(item);
       const index = this.model.indexOf(item);
