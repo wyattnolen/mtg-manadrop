@@ -28,6 +28,7 @@
         placeholder="Start typing to Search"
         prepend-icon="mdi-database-search"
         return-object
+        cache-items
       ></v-autocomplete>
     </v-card-text>
     <v-divider></v-divider>
@@ -90,13 +91,13 @@ export default {
 
   watch: {
     search(val) {
-      if (!val) {
+      if (!val || val.length < 3) {
         return;
       }
 
       this.clearEntries();
       this.isLoading = true;
-      this.fetchEntriesDebounced();
+      this.fetchEntriesDebounced(val);
     },
   },
 
@@ -105,23 +106,21 @@ export default {
       this.count = 0;
       this.entries = [];
     },
-    fetchEntriesDebounced() {
+    fetchEntriesDebounced(val) {
       clearTimeout(this._searchTimerId);
       this._searchTimerId = setTimeout(() => {
-        this.fetchEntries();
-      }, 500); /* 500ms throttle */
+        this.fetchEntries(val);
+      }, 500);
     },
-    fetchEntries() {
-      //   fetch("https://api.publicapis.org/entries")
-      fetch("https://api.magicthegathering.io/v1/cards")
-        .then((res) => res.json())
+    fetchEntries(val) {
+      const mtg = require("mtgsdk");
+      mtg.card
+        .where({ name: val })
         .then((res) => {
           console.log(res);
-          //   const { count, entries } = res;
-          //   this.count = count;
-          //   this.entries = entries;
-          const { cards } = res;
+          const cards = res;
           this.entries = cards;
+          console.log("test", this.entries);
         })
         .catch((err) => {
           console.log(err);
