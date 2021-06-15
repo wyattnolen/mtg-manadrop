@@ -37,7 +37,7 @@
               @click:close="remove(data.item)"
             >
               <v-avatar left>
-                <v-img :src="data.item.avatar"></v-img>
+                <v-img :src="data.item.imageUrl"></v-img>
               </v-avatar>
               {{ data.item.name }}
             </v-chip>
@@ -52,6 +52,9 @@
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                <v-list-item-subtitle
+                  v-html="data.item.setName"
+                ></v-list-item-subtitle>
               </v-list-item-content>
             </template>
           </template>
@@ -97,13 +100,11 @@ export default {
 
   methods: {
     remove(item) {
-      console.log(item);
       const index = this.model.indexOf(item);
       if (index >= 0) this.model.splice(index, 1);
     },
 
     clearEntries() {
-      this.count = 0;
       this.entries = [];
     },
     fetchEntriesDebounced(val) {
@@ -117,7 +118,7 @@ export default {
       mtg.card
         .where({ name: val })
         .then((res) => {
-          const cards = res;
+          const cards = res.filter((item) => item.multiverseid != null);
           this.entries = cards;
         })
         .catch((err) => {
