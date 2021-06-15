@@ -1,56 +1,5 @@
 <template>
   <div>
-    <!-- <v-card color="red lighten-2" dark>
-      <v-card-title class="text-h5 red lighten-3">
-        Search for Public APIs
-      </v-card-title>
-      <v-card-text>
-        Explore hundreds of free API's ready for consumption! For more
-        information visit
-        <a
-          class="grey--text text--lighten-3"
-          href="https://github.com/toddmotto/public-apis"
-          target="_blank"
-          >the GitHub repository</a
-        >.
-      </v-card-text>
-      <v-card-text>
-        <v-autocomplete
-          v-model="model"
-          :items="items"
-          :loading="isLoading"
-          :search-input.sync="search"
-          color="white"
-          hide-no-data
-          hide-selected
-          item-text="Name"
-          item-value="API"
-          label="Public APIs"
-          placeholder="Start typing to Search"
-          prepend-icon="mdi-database-search"
-          return-object
-          cache-items
-        ></v-autocomplete>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-expand-transition>
-        <v-list v-if="model" class="red lighten-3">
-          <v-list-item v-for="(field, i) in fields" :key="i">
-            <v-list-item-content>
-              <v-list-item-title v-text="field.value"></v-list-item-title>
-              <v-list-item-subtitle v-text="field.key"></v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-expand-transition>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn :disabled="!model" color="grey darken-3" @click="model = null">
-          Clear
-          <v-icon right> mdi-close-circle </v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card> -->
     <v-btn
       :disabled="autoUpdate"
       :loading="isUpdating"
@@ -79,7 +28,7 @@
           return-object
           cache-items
         >
-          <!-- <template v-slot:selection="data">
+          <template v-slot:selection="data">
             <v-chip
               v-bind="data.attrs"
               :input-value="data.selected"
@@ -99,33 +48,14 @@
             </template>
             <template v-else>
               <v-list-item-avatar>
-                 <img :src="data.item.avatar" />
+                <v-img :src="data.item.imageUrl"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                <v-list-item-subtitle
-                  v-html="data.item.group"
-                ></v-list-item-subtitle>
               </v-list-item-content>
             </template>
-          </template> -->
+          </template>
         </v-autocomplete>
-        <v-list v-if="model">
-          <v-list-item v-for="item in model" :key="item.id">
-            {{ item.name }}
-          </v-list-item>
-        </v-list>
-        <!-- {{ model.id }} -->
-        <!-- <v-list v-if="model" class="red lighten-3">
-          <v-list-item v-for="(item, i) in model" :key="i">
-           
-            <v-list-item-content>
-              <v-list-item-title v-text="item.name"></v-list-item-title>
-              <p @click:close="remove(item)">remove</p>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list> -->
-        <p @click="submit">test</p>
       </v-container>
     </v-form>
   </div>
@@ -146,63 +76,7 @@ export default {
     selected: [],
   }),
 
-  computed: {
-    // fields() {
-    //   if (!this.model) return [];
-    //   return Object.keys(this.model).map((key) => {
-    //     return {
-    //       key,
-    //       value: this.model[key] || "n/a",
-    //     };
-    //   });
-    // },
-    // items() {
-    //   return this.entries.map((entry) => {
-    //     const Name =
-    //       entry.name.length > this.nameLimit
-    //         ? entry.name.slice(0, this.nameLimit) + "..."
-    //         : entry.name;
-    //     return Object.assign({}, entry, { Name });
-    //   });
-    // },
-  },
-
-  mounted() {
-    this.model = [
-      {
-        name: "Rage Weaver",
-        manaCost: "{1}{R}",
-        cmc: 2,
-        colors: ["Red"],
-        colorIdentity: ["R"],
-        type: "Creature — Human Wizard",
-        types: ["Creature"],
-        subtypes: ["Human", "Wizard"],
-        rarity: "Uncommon",
-        set: "10E",
-        setName: "Tenth Edition",
-        text: "{2}: Target black or green creature gains haste until end of turn. (It can attack and {T} this turn.)",
-        flavor: '"Let my passion spur your victory."',
-        artist: "John Matson",
-        number: "223★",
-        power: "2",
-        toughness: "1",
-        layout: "normal",
-        variations: ["6fd7afbb-7725-5f7a-91fe-cb578229971a"],
-        printings: ["10E", "INV"],
-        legalities: [
-          { format: "Commander", legality: "Legal" },
-          { format: "Duel", legality: "Legal" },
-          { format: "Legacy", legality: "Legal" },
-          { format: "Modern", legality: "Legal" },
-          { format: "Penny", legality: "Legal" },
-          { format: "Premodern", legality: "Legal" },
-          { format: "Vintage", legality: "Legal" },
-        ],
-        id: "9e0f4c70-6db0-5798-8307-caf4f98f17f9",
-      },
-    ];
-  },
+  computed: {},
 
   watch: {
     isUpdating(val) {
@@ -222,9 +96,6 @@ export default {
   },
 
   methods: {
-    submit() {
-      console.log(this.model);
-    },
     remove(item) {
       console.log(item);
       const index = this.model.indexOf(item);
