@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn
+    <!-- <v-btn
       :disabled="autoUpdate"
       :loading="isUpdating"
       color="blue-grey darken-3"
@@ -60,7 +60,7 @@
           </template>
         </v-autocomplete>
       </v-container>
-    </v-form>
+    </v-form> -->
   </div>
 </template>
 
@@ -98,6 +98,10 @@ export default {
     },
   },
 
+  mounted() {
+    this.fetchEntriesDebounced("goblin");
+  },
+
   methods: {
     remove(item) {
       const index = this.model.indexOf(item);
@@ -114,12 +118,11 @@ export default {
       }, 500);
     },
     fetchEntries(val) {
-      const mtg = require("mtgsdk");
-      mtg.card
-        .where({ name: val })
-        .then((res) => {
-          const cards = res.filter((item) => item.multiverseid != null);
-          this.entries = cards;
+      console.log(val);
+      this.axios
+        .get(`https://api.scryfall.com/cards/search?q=${val}+unique%3Aprints`)
+        .then(function (response) {
+          console.log(response.data.data);
         })
         .catch((err) => {
           console.log(err);
