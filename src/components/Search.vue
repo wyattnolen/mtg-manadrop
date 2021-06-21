@@ -37,7 +37,7 @@
               @click:close="remove(data.item)"
             >
               <v-avatar left>
-                <v-img :src="data.item.imageUrl"></v-img>
+                <v-img :src="data.item.image_uris.art_crop"></v-img>
               </v-avatar>
               {{ data.item.name }}
             </v-chip>
@@ -48,12 +48,12 @@
             </template>
             <template v-else>
               <v-list-item-avatar>
-                <v-img :src="data.item.imageUrl"></v-img>
+                <v-img :src="data.item.image_uris.art_crop"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-html="data.item.name"></v-list-item-title>
                 <v-list-item-subtitle
-                  v-html="data.item.setName"
+                  v-html="data.item.set_name"
                 ></v-list-item-subtitle>
               </v-list-item-content>
             </template>
@@ -111,14 +111,13 @@ export default {
       clearTimeout(this._searchTimerId);
       this._searchTimerId = setTimeout(() => {
         this.fetchEntries(val);
-      }, 500);
+      }, 1000);
     },
     fetchEntries(val) {
-      const mtg = require("mtgsdk");
-      mtg.card
-        .where({ name: val })
-        .then((res) => {
-          const cards = res.filter((item) => item.multiverseid != null);
+      this.axios
+        .get(`https://api.scryfall.com/cards/search?q=${val}+unique%3Aprints`)
+        .then((response) => {
+          const cards = response.data.data;
           this.entries = cards;
         })
         .catch((err) => {
