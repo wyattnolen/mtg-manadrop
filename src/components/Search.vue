@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <v-btn
+    <v-btn
       :disabled="autoUpdate"
       :loading="isUpdating"
       color="blue-grey darken-3"
@@ -37,7 +37,7 @@
               @click:close="remove(data.item)"
             >
               <v-avatar left>
-                <v-img :src="data.item.imageUrl"></v-img>
+                <v-img :src="data.item.image_uris.art_crop"></v-img>
               </v-avatar>
               {{ data.item.name }}
             </v-chip>
@@ -48,19 +48,19 @@
             </template>
             <template v-else>
               <v-list-item-avatar>
-                <v-img :src="data.item.imageUrl"></v-img>
+                <v-img :src="data.item.image_uris.art_crop"></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-html="data.item.name"></v-list-item-title>
                 <v-list-item-subtitle
-                  v-html="data.item.setName"
+                  v-html="data.item.set_name"
                 ></v-list-item-subtitle>
               </v-list-item-content>
             </template>
           </template>
         </v-autocomplete>
       </v-container>
-    </v-form> -->
+    </v-form>
   </div>
 </template>
 
@@ -98,10 +98,6 @@ export default {
     },
   },
 
-  mounted() {
-    this.fetchEntriesDebounced("goblin");
-  },
-
   methods: {
     remove(item) {
       const index = this.model.indexOf(item);
@@ -115,14 +111,14 @@ export default {
       clearTimeout(this._searchTimerId);
       this._searchTimerId = setTimeout(() => {
         this.fetchEntries(val);
-      }, 500);
+      }, 1000);
     },
     fetchEntries(val) {
-      console.log(val);
       this.axios
         .get(`https://api.scryfall.com/cards/search?q=${val}+unique%3Aprints`)
-        .then(function (response) {
-          console.log(response.data.data);
+        .then((response) => {
+          const cards = response.data.data;
+          this.entries = cards;
         })
         .catch((err) => {
           console.log(err);
