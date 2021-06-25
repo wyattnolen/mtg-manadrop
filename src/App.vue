@@ -35,6 +35,7 @@
     </v-app-bar>
 
     <v-main>
+      <TableSearch />
       <router-view />
     </v-main>
   </v-app>
@@ -42,11 +43,13 @@
 
 <script>
 import Search from "./components/Search.vue";
+import TableSearch from "./components/TableSearch.vue";
 export default {
   name: "App",
 
   components: {
     Search,
+    TableSearch,
   },
 
   data: () => ({}),
@@ -56,23 +59,6 @@ export default {
   mounted() {},
 
   watch: {},
-  methods: {
-    searchForCardByName(v) {
-      const mtg = require("mtgsdk");
-      mtg.card
-        .where({ name: v })
-        .then((results) => {
-          console.log(results);
-          this.items = results;
-        })
-        // .then((results) => {
-        //   const { count, entries } = results;
-        //   this.count = count;
-        //   this.entries = entries;
-        //   console.log(entries);
-        // })
-        .finally(() => (this.isLoading = false));
-    },
-  },
+  methods: {},
 };
 </script>
