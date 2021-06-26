@@ -2,10 +2,12 @@
   <div class="">
     <h1 style="text-align: center">Datatable with 3rd Party API</h1>
     <v-data-table
-      :page="page"
+      :page.sync="page"
+      :items-per-page="itemsPerPage"
       :headers="headers"
       :items="entries"
-      :items-per-page="175"
+      :sort-by.sync="sortBy"
+      :sort-desc.sync="sortDesc"
       :options.sync="options"
       :server-items-length="totalCards"
       :loading="isLoading"
@@ -21,8 +23,11 @@ export default {
   data() {
     return {
       page: 1,
+      itemsPerPage: 175,
       totalCards: 0,
       isLoading: true,
+      sortBy: "name",
+      sortDesc: false,
       entries: [],
       options: {},
       search: "Goblin",
